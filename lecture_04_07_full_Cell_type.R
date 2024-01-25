@@ -15,9 +15,6 @@
 
 ################################### INTRO ######################################
 
-rm(list = ls())
-setwd("C:/Users/ASUS/OneDrive - Università degli Studi di Padova/uni/Magistrale/1° anno/2° - Machine learning for bioengineering/R_codes")
-
 ct <- read.table("lez_04_CellType.dat")
 ct$Bcell <- as.factor(ct$Bcell)
 ct$Acurrent <- as.factor(ct$Acurrent)
@@ -58,7 +55,7 @@ legend("topright",c("B","A or D"),col=c(2,1),pch=c(19,2))
 plot(kh~V2h,col=Bcell,pch=ifelse(Bcell=="yes",19,2))
 legend("topright",c("B","A or D"),col=c(2,1),pch=c(19,2))
 
-plot(V2h~Bcell) # dal grafo si nota che è la var migliore per separare le Bcell
+plot(V2h~Bcell) # dal grafo si nota che Ã¨ la var migliore per separare le Bcell
 plot(Ccell~Bcell)
 plot(kh~Bcell)
 
@@ -129,7 +126,7 @@ modelB <- train( formula( logiB ) ,
                  trControl = train.control )
 
 print( modelB )
-# probabilità che un nuovo dato sia una cellula B
+# probabilitÃ  che un nuovo dato sia una cellula B
 newdata3 <- data.frame(Imax=-900,Ccell=5)
 ppB = predict(logiB,newdata3)
 1/(1+exp(-ppB))
@@ -148,7 +145,7 @@ legend("topright",c("B","A or D"),col=c(2,1),pch=c(19,2))
 plot(kh~V2h,col=Acell,pch=ifelse(Acell=="yes",19,2))
 legend("topright",c("B","A or D"),col=c(2,1),pch=c(19,2))
 
-plot(V2h~Acell) # V2h è la miglior var per separare anche Acell
+plot(V2h~Acell) # V2h Ã¨ la miglior var per separare anche Acell
 plot(Ccell~Acell)
 plot(kh~Acell)
 
@@ -186,13 +183,13 @@ summary(logiA)
 modelA <- train(formula(logiA),data=ct,method="glm",family=binomial(),
                 trControl=train.control)
 print(modelA)
-# probabilità che un nuovo dato sia una cellula A
+# probabilitÃ  che un nuovo dato sia una cellula A
 ppA = predict(logiA,newdata3)
 1/(1+exp(-ppA))
 
 logiA.1 <- glm(Acell~Imax+Ccell, binomial(link="logit"), data=ct)
 
-# probabilità della griglia di valori dei Ccell e Imax
+# probabilitÃ  della griglia di valori dei Ccell e Imax
 CC <- seq(2.5,15,by=0.5)
 II <- seq(-1700,-100,by=50)
 gr <- expand.grid(Imax=II,Ccell=CC) # crea tuttle le possibili combinazioni di II e CC
@@ -267,7 +264,7 @@ summary(logiD)
 modelD <- train(formula(logiD),data=ct,method="glm",family=binomial(),
                 trControl=train.control)
 print(modelD)
-# probabilità che un nuovo dato sia una cellula D
+# probabilitÃ  che un nuovo dato sia una cellula D
 ppD = predict(logiD,newdata3)
 1/(1+exp(-ppD))
 
@@ -293,7 +290,7 @@ plot(Imax~CellType)
 
 ct$CellType<-relevel(ct$CellType,"A")
 # stabilisco il celltype B come classe di riferimento
-# la odds che ottengo è riferita a tale classe
+# la odds che ottengo Ã¨ riferita a tale classe
 
 controlvar <- trainControl(method="LOOCV")
 
@@ -355,7 +352,7 @@ print(nb.train)
 
 nbb <- NaiveBayes(Acell~Imax+Ccell,data=ct)
 names(nbb)
-nbb$apriori # restituissce la probabilità no yes di essere Acell a priori (ratio)
+nbb$apriori # restituissce la probabilitÃ  no yes di essere Acell a priori (ratio)
 nbb$tables # restituisce avg e std dei fit con var gaus delle variab  considerate
 # (Imax e Ccell) sei per la Acell a priori che per le notAcell a priori
 plot(nbb) # plotta num della formula di Bayes per ciascuna variabile
@@ -370,7 +367,7 @@ image(II,CC,gr.classA.nbb,xlab="Imax",ylab="Ccell")
 points(Ccell~Imax,col=Acell,pch=19)
 
 
-# posso predire anche più classi
+# posso predire anche piÃ¹ classi
 
 nbmulti1 <-NaiveBayes(CellType~V2h,data=ct)
 #plot(nbmulti1)
@@ -474,16 +471,16 @@ plot(svm.poli.2,data=ct,Ccell~Imax,grid=100)
 svm.poli.3 <- svm(Acell~Ccell+Imax,data=ct,kernel="polynomial",cost=1,degree=10)
 plot(svm.poli.3,data=ct,Ccell~Imax,grid=100)
 
-# aumentando il costo, una predizione sbagliata è "più grave"
-# e stiamo forzando i confini ad includere più punti possibile al costo di aver
-# una norma di w più grande con il proble di non predire benissimi nuovi dati
+# aumentando il costo, una predizione sbagliata Ã¨ "piÃ¹ grave"
+# e stiamo forzando i confini ad includere piÃ¹ punti possibile al costo di aver
+# una norma di w piÃ¹ grande con il proble di non predire benissimi nuovi dati
 # se lo diminuisco, una predizione sbagliata o l'essere vicino al margine viene
 # consoderato meno grave e penalizzato poco
 # cambiando il grado, aumentandolo spingo per predire tutte le cellule, anche le
-# più lontante facendo overfitting del training set e predicendo male nuovi dati
+# piÃ¹ lontante facendo overfitting del training set e predicendo male nuovi dati
 
 
-# per valutare la bontà di predizione dei valori di costo e grado uso tune
+# per valutare la bontÃ  di predizione dei valori di costo e grado uso tune
 tune_out.poly <- tune( svm , Acell ~ Ccell + Imax , data = ct , kernel = "polynomial" ,
                        ranges = list( cost = c(0.1,1,10,100,100) , degree = c(0.5,1,2,3,4)))
 # ranges: valori da provare per i parametri specificati, prova le combinazioni
@@ -631,7 +628,7 @@ cv.cttree2 <- cv.tree(cttree,FUN=prune.misclass,K=nrow(ct))
 # in questo modo faccio una loocv con k num di folds pari al num di dati
 cv.cttree2
 plot(cv.cttree2,type="b")
-# nel grafico cambia perchè si basa su cv
+# nel grafico cambia perchÃ¨ si basa su cv
 # size tells the num of nodes in the three
 # dev tells how good it is at predicting
 # looking at the misclassification graph there is a number of nodes at which
@@ -987,7 +984,7 @@ dist_mat <- dist( ctnorm )
 hclust_avg <- hclust( dist_mat , method = 'average' )
 plot( hclust_avg )
 # quando ci sono distanze verticai molto elevate, significa che l'accoppiamento
-# dei cluster sta creando molto cambiamento ( sto unendo dati che in realtà
+# dei cluster sta creando molto cambiamento ( sto unendo dati che in realtÃ 
 # sarebbero molto distanti )
 
 rect.hclust( hclust_avg , k = 4 , border = 2:6 )
