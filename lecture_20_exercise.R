@@ -1,9 +1,6 @@
 
 ################################################################################
 
-rm(list = ls())
-setwd("C:/Users/ASUS/OneDrive - Universit‡ degli Studi di Padova/uni/Magistrale/1∞ anno/2∞ - Machine learning for bioengineering/R_codes")
-
 library(NbClust)
 library(factoextra)
 library(cluster)
@@ -144,6 +141,6 @@ table( kmed.s$cluster , cl )
 
 fviz_nbclust( dat, cluster::pam , method = "silhouette" )
 
-# il migioramento che ho nella predizione usando data.s non Ë dovuto alla riduzione
-# della dimensionalit‡ dei dati
+# il migioramento che ho nella predizione usando data.s non √® dovuto alla riduzione
+# della dimensionalit√† dei dati
 
