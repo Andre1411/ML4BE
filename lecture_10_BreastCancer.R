@@ -1,12 +1,6 @@
 
 #########################################################################
 
-setwd("C:/Users/ASUS/OneDrive - Università degli Studi di Padova/uni/Magistrale/1° anno/2° - Machine learning for bioengineering/R_codes")
-
-# per capire le covariate significative per distinguere la classe si può fare
-# modello logistico che prende in considerazione tutte le covariate e selezionare
-# quelle che hanno pvalue significativo
-
 data <- read.table("BreastCancer_complete.dat")
 head(data)
 data$class <- as.factor(data$class)
@@ -56,13 +50,11 @@ svm.fit6 <- svm(class~adhesion+thickness,data=data,
 plot(svm.fit6,data=data,adhesion~thickness,grid=100)
 
 
-
-
 tune_out = tune(svm, class~adhesion+thickness, data = data, kernel = "radial",
                 ranges = list(cost = c(0.1,1,10,100,1000), gamma = c(0.5,1,2,3,4)))
 bestmod = tune_out$best.model
 tune_out
-# scegliamo il modello svm.fit3 (cost=1, gamma=0.5)
+# chosen model: svm.fit3 (cost=1, gamma=0.5)
 summary(bestmod)
 
 ################################ CV ################################
@@ -83,7 +75,3 @@ svm.fit7 <- svm(class~adhesion+thickness+unif.shape+chromatin, data = data,
 cv.svm.fit7 <- train(class~adhesion+thickness+unif.shape+chromatin, data = data,
                      method = "svmRadial", trControl = train.control)
 cv.svm.fit7
-
-
-
-
