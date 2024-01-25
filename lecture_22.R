@@ -1,9 +1,3 @@
-
-
-rm(list = ls())
-setwd("C:/Users/ASUS/OneDrive - Università degli Studi di Padova/uni/Magistrale/1° anno/2° - Machine learning for bioengineering/R_codes")
-
-
 data <- read.table("BreastCancer_complete.dat")
 head(data)
 data$class <- as.factor(data$class)
