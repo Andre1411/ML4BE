@@ -1,12 +1,3 @@
-
-
-
-rm(list = ls())
-
-setwd("C:/Users/ASUS/OneDrive - Università degli Studi di Padova/uni/Magistrale/1° anno/2° - Machine learning for bioengineering/R_codes")
-
-
-# ###
 hd <- read.table("HeartDisease.dat" , stringsAsFactors = T )
 head(hd)
 hd$num <- as.factor(hd$num)
@@ -120,7 +111,7 @@ pred.gbm <- predict( best.gbm,
 pred.gbm
 pred.gbm.mat <- matrix( pred.gbm , ncol = 5 )
 pred.class <- as.factor( max.col( pred.gbm.mat ) - 1 )
-# sottraggo 1 perchè le colonne vanno da 1 a 5 mentre le classi da 0 a 4
+# sottraggo 1 perchÃ¨ le colonne vanno da 1 a 5 mentre le classi da 0 a 4
 pred.class
 
 
